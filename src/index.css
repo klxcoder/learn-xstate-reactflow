@@ -3,3 +3,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
