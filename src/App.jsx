@@ -39,11 +39,9 @@ export default function FSMVisualizer() {
     setNodes(prevNodes =>
       prevNodes.map(node => ({
         ...node,
-        data: {
-          ...node.data,
-          style: {
-            backgroundColor: state.matches(node.id) ? "lightgreen" : "white"
-          }
+        style: {
+          ...node.style,
+          backgroundColor: state.matches(node.id) ? "lightgreen" : "white"
         }
       }))
     );
@@ -53,7 +51,11 @@ export default function FSMVisualizer() {
   return (
     <div className="app">
       <div style={{ width: "800px", height: "500px", border: "1px solid black" }}>
-        <ReactFlow nodes={nodes} edges={edges} fitView />
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          fitView
+        />
       </div>
       <div className="buttons">
         <button onClick={() => send({ type: "NEXT" })} disabled={!state.matches("start")}>Next</button>
