@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { createMachine } from "xstate";
-import ReactFlow from "reactflow";
+import ReactFlow, { Controls, Background } from "reactflow";
 import styles from "./Example2.module.css";
 import "reactflow/dist/style.css";
 
@@ -42,7 +42,7 @@ export default function Example2() {
   // ReactFlow Nodes
   const [nodes, setNodes] = useState([
     { id: "idle", data: { label: "idle" }, position: { x: 0, y: 0 } },
-    { id: "fetching", data: { label: "fetching" }, position: { x: 200, y: 0 } },
+    { id: "fetching", data: { label: "fetching" }, position: { x: 200, y: 100 } },
     { id: "error", data: { label: "error" }, position: { x: 400, y: 0 } },
   ]);
   useEffect(() => {
@@ -65,7 +65,10 @@ export default function Example2() {
           nodes={nodes}
           edges={edges}
           fitView
-        />
+        >
+          <Controls />
+          <Background />
+        </ReactFlow>
       </div>
       <div className={styles.buttons}>
         <button onClick={() => send({ type: "click" })} disabled={!state.matches("idle")}>click</button>
