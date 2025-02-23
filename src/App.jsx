@@ -3,6 +3,7 @@ import { useMachine } from "@xstate/react";
 import { createMachine } from "xstate";
 import ReactFlow from "reactflow";
 import "reactflow/dist/style.css";
+import "./App.css";
 
 // Define FSM
 const fsmMachine = createMachine({
