@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { createMachine } from "xstate";
 import ReactFlow from "reactflow";
@@ -17,15 +17,6 @@ const fsmMachine = createMachine({
   }
 });
 
-// ReactFlow Nodes
-const nodes = [
-  { id: "start", data: { label: "Start" }, position: { x: 0, y: 0 } },
-  { id: "processing", data: { label: "Processing" }, position: { x: 200, y: 0 } },
-  { id: "trap", data: { label: "Trap State" }, position: { x: 400, y: 50 } },
-  { id: "final", data: { label: "Final State" }, position: { x: 200, y: 100 } },
-  { id: "isolated", data: { label: "Isolated State" }, position: { x: 400, y: -50 } }
-];
-
 // ReactFlow Edges
 const edges = [
   { id: "e1", source: "start", target: "processing" },
@@ -36,8 +27,26 @@ const edges = [
 
 export default function FSMVisualizer() {
   const [state, send] = useMachine(fsmMachine);
-
+  // ReactFlow Nodes
+  const [nodes, setNodes] = useState([
+    { id: "start", data: { label: "Start" }, position: { x: 0, y: 0 } },
+    { id: "processing", data: { label: "Processing" }, position: { x: 200, y: 0 } },
+    { id: "trap", data: { label: "Trap State" }, position: { x: 400, y: 50 } },
+    { id: "final", data: { label: "Final State" }, position: { x: 200, y: 100 } },
+    { id: "isolated", data: { label: "Isolated State" }, position: { x: 400, y: -50 } }
+  ]);
   useEffect(() => {
+    setNodes(prevNodes =>
+      prevNodes.map(node => ({
+        ...node,
+        data: {
+          ...node.data,
+          style: {
+            backgroundColor: state.matches(node.id) ? "lightgreen" : "white"
+          }
+        }
+      }))
+    );
     console.log("Current State:", state.value);
   }, [state]);
 
@@ -45,11 +54,11 @@ export default function FSMVisualizer() {
     <div className="app">
       <div style={{ width: "800px", height: "500px", border: "1px solid black" }}>
         <ReactFlow nodes={nodes} edges={edges} fitView />
-        <button onClick={() => send("NEXT")} disabled={state.matches("final")}>Next</button>
-        <button onClick={() => send("SUCCESS")} disabled={!state.matches("processing")}>
+        <button onClick={() => send({ type: "NEXT" })} disabled={state.matches("final")}>Next</button>
+        <button onClick={() => send({ type: "SUCCESS" })} disabled={!state.matches("processing")}>
           Success
         </button>
-        <button onClick={() => send("FAIL")} disabled={!state.matches("processing")}>
+        <button onClick={() => send({ type: "FAIL" })} disabled={!state.matches("processing")}>
           Fail
         </button>
         <h1>Current state: {state.value}</h1>
