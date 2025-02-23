@@ -15,3 +15,11 @@
   align-items: center;
   gap: 10px;
 }
+
+.customNode {
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
