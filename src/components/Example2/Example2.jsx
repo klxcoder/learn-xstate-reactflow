@@ -34,34 +34,42 @@ const edges = [
   {
     id: "click",
     source: "idle",
-    sourceHandle: "t",
+    sourceHandle: "right",
     target: "fetching",
-    targetHandle: "t",
+    targetHandle: "top",
     label: "click",
+    markerEnd: { type: "arrowclosed" },
+    style: { strokeWidth: 2 }
   },
   {
     id: "failure",
     source: "fetching",
-    sourceHandle: "t",
+    sourceHandle: "right",
     target: "error",
-    targetHandle: "t",
+    targetHandle: "top",
     label: "failure",
+    markerEnd: { type: "arrowclosed" },
+    style: { strokeWidth: 2 }
   },
   {
     id: "retry",
     source: "error",
-    sourceHandle: "b",
+    sourceHandle: "left",
     target: "fetching",
-    targetHandle: "b",
+    targetHandle: "bottom",
     label: "retry",
+    markerEnd: { type: "arrowclosed" },
+    style: { strokeWidth: 2 }
   },
   {
     id: "success",
     source: "fetching",
-    sourceHandle: "b",
+    sourceHandle: "left",
     target: "idle",
-    targetHandle: "b",
+    targetHandle: "bottom",
     label: "success",
+    markerEnd: { type: "arrowclosed" },
+    style: { strokeWidth: 2 }
   },
 ];
 
@@ -78,13 +86,13 @@ export default function Example2() {
     {
       id: "fetching",
       data: { label: "fetching" },
-      position: { x: 200, y: 100 },
+      position: { x: 300, y: 0 },
       type: "customNode"
     },
     {
       id: "error",
       data: { label: "error" },
-      position: { x: 400, y: 0 },
+      position: { x: 600, y: 0 },
       type: "customNode"
     },
   ]);
@@ -105,11 +113,15 @@ export default function Example2() {
   const nodeTypes = {
     customNode: ({ data }) => (
       <div className={styles.customNode}>
-        <Handle type="source" position="top" id="t" />
+        <Handle type="source" position="top" id="top" />
+        <Handle type="source" position="right" id="right" />
+        <Handle type="source" position="bottom" id="bottom" />
+        <Handle type="source" position="left" id="left" />
         <div>{data.label}</div>
-        <Handle type="source" position="bottom" id="b" />
-        <Handle type="target" position="top" id="t" />
-        <Handle type="target" position="bottom" id="b" />
+        <Handle type="target" position="top" id="top" />
+        <Handle type="target" position="right" id="right" />
+        <Handle type="target" position="bottom" id="bottom" />
+        <Handle type="target" position="left" id="left" />
       </div>
     )
   };
