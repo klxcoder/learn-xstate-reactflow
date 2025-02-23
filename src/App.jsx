@@ -54,6 +54,8 @@ export default function FSMVisualizer() {
     <div className="app">
       <div style={{ width: "800px", height: "500px", border: "1px solid black" }}>
         <ReactFlow nodes={nodes} edges={edges} fitView />
+      </div>
+      <div className="buttons">
         <button onClick={() => send({ type: "NEXT" })} disabled={!state.matches("start")}>Next</button>
         <button onClick={() => send({ type: "SUCCESS" })} disabled={!state.matches("processing")}>
           Success
@@ -61,8 +63,8 @@ export default function FSMVisualizer() {
         <button onClick={() => send({ type: "FAIL" })} disabled={!state.matches("processing")}>
           Fail
         </button>
-        <h1>Current state: {state.value}</h1>
       </div>
+      <h1>Current state: {state.value}</h1>
     </div>
   );
 }
