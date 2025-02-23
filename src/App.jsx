@@ -19,7 +19,7 @@ const fsmMachine = createMachine({
 
 // ReactFlow Edges
 const edges = [
-  { id: "e1", source: "start", target: "processing" },
+  { id: "e1", source: "start", target: "processing", label: "NEXT" },
   { id: "e2", source: "processing", target: "final", label: "SUCCESS" },
   { id: "e3", source: "processing", target: "trap", label: "FAIL" }
   // No edges for isolated (it's disconnected)
@@ -54,7 +54,7 @@ export default function FSMVisualizer() {
     <div className="app">
       <div style={{ width: "800px", height: "500px", border: "1px solid black" }}>
         <ReactFlow nodes={nodes} edges={edges} fitView />
-        <button onClick={() => send({ type: "NEXT" })} disabled={state.matches("final")}>Next</button>
+        <button onClick={() => send({ type: "NEXT" })} disabled={!state.matches("start")}>Next</button>
         <button onClick={() => send({ type: "SUCCESS" })} disabled={!state.matches("processing")}>
           Success
         </button>
