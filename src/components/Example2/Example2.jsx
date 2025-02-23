@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { createMachine } from "xstate";
-import ReactFlow, { Controls, Background } from "reactflow";
+import ReactFlow, { Controls, Background, Handle } from "reactflow";
 import styles from "./Example2.module.css";
 import "reactflow/dist/style.css";
 
@@ -31,20 +31,64 @@ const fsmMachine = createMachine({
 
 // ReactFlow Edges
 const edges = [
-  { id: "click", source: "idle", target: "fetching", label: "click" },
-  { id: "failure", source: "fetching", target: "error", label: "failure" },
-  { id: "retry", source: "error", target: "fetching", label: "retry" },
-  { id: "success", source: "fetching", target: "idle", label: "success" },
+  {
+    id: "click",
+    source: "idle",
+    sourceHandle: "t",
+    target: "fetching",
+    targetHandle: "t",
+    label: "click",
+  },
+  {
+    id: "failure",
+    source: "fetching",
+    sourceHandle: "t",
+    target: "error",
+    targetHandle: "t",
+    label: "failure",
+  },
+  {
+    id: "retry",
+    source: "error",
+    sourceHandle: "b",
+    target: "fetching",
+    targetHandle: "b",
+    label: "retry",
+  },
+  {
+    id: "success",
+    source: "fetching",
+    sourceHandle: "b",
+    target: "idle",
+    targetHandle: "b",
+    label: "success",
+  },
 ];
 
 export default function Example2() {
   const [state, send] = useMachine(fsmMachine);
   // ReactFlow Nodes
   const [nodes, setNodes] = useState([
-    { id: "idle", data: { label: "idle" }, position: { x: 0, y: 0 } },
-    { id: "fetching", data: { label: "fetching" }, position: { x: 200, y: 100 } },
-    { id: "error", data: { label: "error" }, position: { x: 400, y: 0 } },
+    {
+      id: "idle",
+      data: { label: "idle" },
+      position: { x: 0, y: 0 },
+      type: "customNode"
+    },
+    {
+      id: "fetching",
+      data: { label: "fetching" },
+      position: { x: 200, y: 100 },
+      type: "customNode"
+    },
+    {
+      id: "error",
+      data: { label: "error" },
+      position: { x: 400, y: 0 },
+      type: "customNode"
+    },
   ]);
+
   useEffect(() => {
     setNodes(prevNodes =>
       prevNodes.map(node => ({
@@ -58,6 +102,18 @@ export default function Example2() {
     console.log("Current State:", state.value);
   }, [state]);
 
+  const nodeTypes = {
+    customNode: ({ data }) => (
+      <div className={styles.customNode}>
+        <Handle type="source" position="top" id="t" />
+        <div>{data.label}</div>
+        <Handle type="source" position="bottom" id="b" />
+        <Handle type="target" position="top" id="t" />
+        <Handle type="target" position="bottom" id="b" />
+      </div>
+    )
+  };
+
   return (
     <div className={styles.app}>
       <div style={{ width: "800px", height: "500px", border: "1px solid black" }}>
@@ -65,6 +121,7 @@ export default function Example2() {
           nodes={nodes}
           edges={edges}
           fitView
+          nodeTypes={nodeTypes}
         >
           <Controls />
           <Background />
