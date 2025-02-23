@@ -20,10 +20,27 @@ const fsmMachine = createMachine({
 
 // ReactFlow Edges
 const edges = [
-  { id: "e1", source: "start", target: "processing", label: "NEXT" },
-  { id: "e2", source: "processing", target: "final", label: "SUCCESS" },
-  { id: "e3", source: "processing", target: "trap", label: "FAIL" }
-  // No edges for isolated (it's disconnected)
+  {
+    id: "e1",
+    source: "start",
+    target: "processing",
+    label: "NEXT",
+    markerEnd: { type: "arrowclosed" },
+  },
+  {
+    id: "e2",
+    source: "processing",
+    target: "final",
+    label: "SUCCESS",
+    markerEnd: { type: "arrowclosed" },
+  },
+  {
+    id: "e3",
+    source: "processing",
+    target: "trap",
+    label: "FAIL",
+    markerEnd: { type: "arrowclosed" },
+  },
 ];
 
 export default function Example1() {
